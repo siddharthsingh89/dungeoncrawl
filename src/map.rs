@@ -3,13 +3,13 @@ use crate::prelude::*;
 const NUM_TILES: usize = (SCREEN_WIDTH * SCREEN_HEIGHT) as usize;
 
 #[derive(Copy, Clone, PartialEq)]
-pub enum TiltType {
+pub enum TileType {
     Wall,
     Floor,
 }
 
 pub struct Map {
-    pub tiles: Vec<TiltType>,
+    pub tiles: Vec<TileType>,
 }
 
 pub fn map_ids(x: i32, y: i32) -> usize {
@@ -19,7 +19,7 @@ pub fn map_ids(x: i32, y: i32) -> usize {
 impl Map {
     pub fn new() -> Self {
         Map {
-            tiles: vec![TiltType::Floor; NUM_TILES],
+            tiles: vec![TileType::Floor; NUM_TILES],
         }
     }
 
@@ -28,10 +28,10 @@ impl Map {
             for x in 0..SCREEN_WIDTH {
                 let idx = map_ids(x, y);
                 match self.tiles[idx] {
-                    TiltType::Floor => {
+                    TileType::Floor => {
                         ctx.set(x, y, YELLOW, BLACK, to_cp437('.'));
                     }
-                    TiltType::Wall => {
+                    TileType::Wall => {
                         ctx.set(x, y, GREEN, BLACK, to_cp437('#'));
                     }
                 }
@@ -44,7 +44,7 @@ impl Map {
     }
 
     pub fn can_enter_tile(&self, point: Point) -> bool {
-        self.in_bounds(point) && self.tiles[map_ids(point.x, point.y)] == TiltType::Floor
+        self.in_bounds(point) && self.tiles[map_ids(point.x, point.y)] == TileType::Floor
     }
 
     pub fn try_idx(&self, point: Point) -> Option<usize> {
